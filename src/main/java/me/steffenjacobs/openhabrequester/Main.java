@@ -1,42 +1,30 @@
 package me.steffenjacobs.openhabrequester;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.commons.logging.impl.AvalonLogger;
 import org.apache.http.NameValuePair;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -174,7 +162,7 @@ public class Main {
 
 		List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 
-		if (ACTUALLY_CREATE_ITEM && !itemService.createItem(OPEN_HAB_URL_WITH_PORT, parameters, item)) {
+		if (ACTUALLY_CREATE_ITEM && !(200 == itemService.createItem(OPEN_HAB_URL_WITH_PORT,/* parameters, */item))) {
 			System.out.println("Could not create item " + item.getName());
 		}
 		System.out.println();
