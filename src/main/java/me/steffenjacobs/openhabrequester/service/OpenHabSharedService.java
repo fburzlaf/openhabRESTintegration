@@ -25,19 +25,20 @@ public final class OpenHabSharedService {
 		HttpPut put = new HttpPut(url);
 		put.setEntity(new UrlEncodedFormEntity(parameters, Consts.UTF_8));
 		put.addHeader("Content-Type", "application/json");
-		
+
 		HttpResponse response = client.execute(put);
 		System.out.println(response.getStatusLine().getStatusCode());
 		System.out.println(url);
 		return 200 == response.getStatusLine().getStatusCode();
 	}
 
-	public boolean sendPutWithPathParameters(String url, String payload) throws IOException {
+	public int sendPutWithPathParameters(String url, String payload) throws IOException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPut put = new HttpPut(url);
 		put.addHeader("Content-Type", "application/json");
+		put.setEntity(new ByteArrayEntity(payload.getBytes("UTF-8")));
 		HttpResponse response = client.execute(put);
-		return 200 == response.getStatusLine().getStatusCode();
+		return response.getStatusLine().getStatusCode();
 	}
 
 	public boolean sendDelete(String url) throws IOException {

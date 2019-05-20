@@ -61,7 +61,7 @@ public class OpenHabLinksService {
 	 */
 	public boolean createLink(String openHabUrlWithPort, String channelUid, String itemName, String body) {
 		try {
-			return sharedService.sendPutWithPathParameters(openHabUrlWithPort + "/rest/links/" + itemName + "/" + channelUid, body);
+			return 200 == sharedService.sendPutWithPathParameters(openHabUrlWithPort + "/rest/links/" + itemName + "/" + channelUid, body);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
