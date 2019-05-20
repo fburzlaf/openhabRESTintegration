@@ -1,17 +1,14 @@
 package me.steffenjacobs.openhabrequester.service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-
-import javax.swing.text.StyleConstants.ColorConstants;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ByteArrayEntity;
@@ -32,6 +29,22 @@ public final class OpenHabSharedService {
 		HttpResponse response = client.execute(put);
 		System.out.println(response.getStatusLine().getStatusCode());
 		System.out.println(url);
+		return 200 == response.getStatusLine().getStatusCode();
+	}
+
+	public boolean sendPutWithPathParameters(String url, String payload) throws IOException {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpPut put = new HttpPut(url);
+		put.addHeader("Content-Type", "application/json");
+		HttpResponse response = client.execute(put);
+		return 200 == response.getStatusLine().getStatusCode();
+	}
+
+	public boolean sendDelete(String url) throws IOException {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpDelete delete = new HttpDelete(url);
+		delete.addHeader("Content-Type", "application/json");
+		HttpResponse response = client.execute(delete);
 		return 200 == response.getStatusLine().getStatusCode();
 	}
 	
