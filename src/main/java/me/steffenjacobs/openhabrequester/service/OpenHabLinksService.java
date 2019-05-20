@@ -14,6 +14,12 @@ public class OpenHabLinksService {
 
 	private final OpenHabSharedService sharedService = new OpenHabSharedService();
 
+	/**
+	 * Sends a HTTP GET request to {@link openHabUrlWithPort}/links to retrieve all
+	 * existing links.
+	 * 
+	 * @return a list of {@link LinksDTO} objects found
+	 */
 	public List<LinksDTO> requestLinks(String openHabUrlWithPort) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
@@ -25,6 +31,14 @@ public class OpenHabLinksService {
 		return new ArrayList<>();
 	}
 
+	/**
+	 * Sends a HTTP GET request to
+	 * {@link openHabUrlWithPort}/links/{@link itemName}/{@link channelUid} to get
+	 * the specific {@link LinksDTO} identified by the given channelUid and
+	 * itemName.
+	 * 
+	 * @return the {@link LinksDTO} identified by the given channelUid and itemName.
+	 */
 	public LinksDTO requestLinksByChannelUidAndItemName(String openHabUrlWithPort, String channelUID, String itemName) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
@@ -36,6 +50,15 @@ public class OpenHabLinksService {
 		return null;
 	}
 
+	/**
+	 * Sends a HTTP PUT request to
+	 * {@link openHabUrlWithPort}/links/{@link itemName}/{@link channelUid} to
+	 * create the specific {@link LinksDTO} identified by the given channelUid and
+	 * itemName with the body specified in {@link body}.
+	 * 
+	 * @return true: if successful<br/>
+	 *         else false
+	 */
 	public boolean createLink(String openHabUrlWithPort, String channelUid, String itemName, String body) {
 		try {
 			return sharedService.sendPutWithPathParameters(openHabUrlWithPort + "/rest/links/" + itemName + "/" + channelUid, body);
@@ -45,6 +68,15 @@ public class OpenHabLinksService {
 		return false;
 	}
 
+	/**
+	 * Sends a HTTP DELETE request to
+	 * {@link openHabUrlWithPort}/links/{@link itemName}/{@link channelUid} to
+	 * delete the specific {@link LinksDTO} identified by the given channelUid and
+	 * itemName.
+	 * 
+	 * @return true: if successful<br/>
+	 *         else false
+	 */
 	public boolean deleteLink(String openHabUrlWithPort, String channelUid, String itemName) {
 		try {
 			return sharedService.sendDelete(openHabUrlWithPort + "/rest/links/" + itemName + "/" + channelUid);
