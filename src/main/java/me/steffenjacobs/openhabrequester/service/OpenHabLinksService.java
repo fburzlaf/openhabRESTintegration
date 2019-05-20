@@ -5,14 +5,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.steffenjacobs.openhabrequester.domain.links.LinksDTO;
-import me.steffenjacobs.openhabrequester.domain.thing.creation.LinksCreationDTO;
 
 public class OpenHabLinksService {
 
@@ -29,14 +25,29 @@ public class OpenHabLinksService {
 		return new ArrayList<>();
 	}
 
-	public boolean createLink(String openHabUrlWithPort, LinksCreationDTO item, List<NameValuePair> parameters) {
+	public LinksDTO requestLinksByChannelUidAndItemName(String openHabUrlWithPort, String channelUID, String itemName) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		parameters.add(new BasicNameValuePair("itemName", item.getItemName()));
-		parameters.add(new BasicNameValuePair("channeUID", item.getChanneUID()));
 		try {
-			String itemJson = "[" + objectMapper.writeValueAsString(item.getBody()) + "]";
-			return sharedService.sendPut(openHabUrlWithPort + "/rest/links/", parameters, itemJson);
+			return objectMapper.readValue(new URL(openHabUrlWithPort + "/rest/links" + "/" + itemName + "/" + channelUID), new TypeReference<LinksDTO>() {
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	public boolean createLink(String openHabUrlWithPort, String channelUid, String itemName, String body) {
+		try {
+			return sharedService.sendPutWithPathParameters(openHabUrlWithPort + "/rest/links/" + itemName + "/" + channelUid, body);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean deleteLink(String openHabUrlWithPort, String channelUid, String itemName) {
+		try {
+			return sharedService.sendDelete(openHabUrlWithPort + "/rest/links/" + itemName + "/" + channelUid);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
