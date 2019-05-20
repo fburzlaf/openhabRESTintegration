@@ -48,23 +48,22 @@ public final class OpenHabSharedService {
 		HttpResponse response = client.execute(delete);
 		return 200 == response.getStatusLine().getStatusCode();
 	}
-	
+
 	public int sendPost(String url, String payload) throws IOException {
+		return sendPost(url, true, payload);
+	}
+
+	public int sendPost(String url, boolean sendHeader, String payload) throws IOException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(url);
 
 		post.setEntity(new ByteArrayEntity(payload.getBytes("UTF-8")));
-		post.addHeader("Content-Type", "application/json");
+		if (sendHeader) {
+			post.addHeader("Content-Type", "application/json");
+		}
 		HttpResponse response = client.execute(post);
 		System.out.println(response.getStatusLine().getStatusCode());
 		System.out.println(url);
 		return response.getStatusLine().getStatusCode();
-	}
-	
-	/**
-	 *  TO BE IMPLEMENTED
-	 * @param URL
-	 */
-	public void listenToServerEvents(String URL) {
 	}
 }
