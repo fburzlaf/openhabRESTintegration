@@ -48,7 +48,7 @@ public final class OpenHabSharedService {
 		return 200 == response.getStatusLine().getStatusCode();
 	}
 	
-	public boolean sendPost(String url, String payload) throws IOException {
+	public int sendPost(String url, String payload) throws IOException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(url);
 
@@ -57,7 +57,7 @@ public final class OpenHabSharedService {
 		HttpResponse response = client.execute(post);
 		System.out.println(response.getStatusLine().getStatusCode());
 		System.out.println(url);
-		return 200 == response.getStatusLine().getStatusCode();
+		return response.getStatusLine().getStatusCode();
 	}
 	
 	/**
